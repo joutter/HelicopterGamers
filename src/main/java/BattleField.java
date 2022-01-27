@@ -24,33 +24,35 @@ public class BattleField {
         }
         player = new Player(1,terminal,ROWS);
         handleKeyStrokes();
-    }
 
-    private void handleKeyStrokes(){
+   }
+   private void handleKeyStrokes(){
 
-        KeyStroke keyStroke = null;
-        boolean continueGame = true;
-        try {
-            while(continueGame) {
-                do {
-                    Thread.sleep(5);
-                    keyStroke = terminal.pollInput();
+       KeyStroke keyStroke = null;
+       boolean continueGame = true;
+       try {
+       while(continueGame) {
+           do {
+               Thread.sleep(5);
+               keyStroke = terminal.pollInput();
 
-                }while (keyStroke == null);
+           }while (keyStroke == null);
 
-                if (keyStroke.getCharacter() != null) {
-                    if (keyStroke.getCharacter() == 'q' || keyStroke.getKeyType().equals(KeyType.EOF)) {
-                        continueGame = false;
-                        terminal.close();
-                    }
-                }
-                switch (keyStroke.getKeyType()){
-                    case ArrowUp -> player.move(-1);
-                    case ArrowDown -> player.move(1);
-                }
-            }
-        }catch (Exception e) {
-            System.out.println(e);
-        }
-    }
+           if (keyStroke.getCharacter() != null) {
+                if (keyStroke.getCharacter() == 'q' || keyStroke.getKeyType().equals(KeyType.EOF)) {
+                   continueGame = false;
+                   terminal.close();
+               }
+           }
+           switch (keyStroke.getKeyType()){
+               case ArrowUp -> player.move(-1);
+               case ArrowDown -> player.move(1);
+           }
+
+       }
+       } catch (Exception e) {
+           System.out.println(e);
+       }
+
+   }
 }
