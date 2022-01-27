@@ -18,7 +18,6 @@ public class Player {
         speed = 1;
         xMargin = 10;
 
-        //Initierar skeppet och ritar upp den. Kan anropas när vi vill starta om skeppet efter krash.
         restart();
     }
     public void move(int i){
@@ -26,8 +25,6 @@ public class Player {
             oldY = yPos;
             oldX = xPos;
             yPos += move;
-
-         // Anropar inBound för att se att farkosten är innanför terminalfönstret.
         if(inBound(yPos)) {
             drawHeli(false);
             drawHeli(true);
@@ -35,6 +32,7 @@ public class Player {
         else{
             yPos = oldY;
         }
+
     }
     public void restart(){
         xPos = xMargin;
@@ -47,13 +45,10 @@ public class Player {
         }
         return false;
     }
-
-    //Den här funktionen både ritar och tar bort farkosten. Variabel true om den ska rita
-    //och false om den ska ta radera.
     private void drawHeli(boolean draw){
+
         char icon;
         int x,y;
-
         if(draw){
             icon = heli.getIcon();
             x = xPos;
