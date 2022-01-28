@@ -51,10 +51,24 @@ public class ObsticleHolder {
     //Check for collision
     boolean checkObsticle(int width, int height){
         for (Obsticle obsticle : obsticles){
-            if ((obsticle.x == width) && (obsticle.y == height)){
-                return true;
+            for (int i = 0; i<3;i++){
+                if ((obsticle.x == width+i) && (obsticle.y == height)){
+                    System.out.println("SMACK!");
+                    System.exit(0);
+                    return false;
+            }
+                if ((obsticle.x == width) && (obsticle.y == height+i)) {
+                    System.out.println("SMACK!");
+                    System.exit(0);
+                    return false;
+                }
+                    if ((obsticle.x == width+i) && (obsticle.y == height+i)) {
+                        System.out.println("SMACK!");
+                        System.exit(0);
+                        return false;
+                    }
             }
         }
-        return false;
+        return true;
     }
 }
