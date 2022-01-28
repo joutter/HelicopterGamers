@@ -13,10 +13,7 @@ public class BattleField {
 
     public BattleField(Terminal terminal){
         this.terminal = terminal;
-        /*DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
-        terminalFactory.setInitialTerminalSize(new TerminalSize(COLUMNS,ROWS));
 
-         */
         int ROWS = 0;
         try {
             //terminal = terminalFactory.createTerminal();
@@ -51,9 +48,10 @@ public class BattleField {
                }while (keyStroke == null);
 
                if (keyStroke.getCharacter() != null) {
-                    if (keyStroke.getCharacter() == 'q' || keyStroke.getKeyType().equals(KeyType.EOF)) {
+                    if (keyStroke.getCharacter() == 'q') {
                        continueGame = false;
-                       terminal.close();
+                       terminal.clearScreen();
+                       new StartMenu();
                    }
                }
                switch (keyStroke.getKeyType()){
