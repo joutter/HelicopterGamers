@@ -20,7 +20,7 @@ public class StartMenu {
         //menu
         String welcome = "WELCOME TO HELICOPTERGAMERS";
         for (int i = 0; i < welcome.length(); i++) {
-            terminal.setCursorPosition(i+52,15);
+            terminal.setCursorPosition(i+51,15);
             terminal.putCharacter(welcome.charAt(i));
         }
         String question = "Start A New Game";
@@ -31,7 +31,7 @@ public class StartMenu {
         //Options
         String option = "y / n";
         for (int i = 0; i < option.length(); i++) {
-            terminal.setCursorPosition( i+63, 17);
+            terminal.setCursorPosition( i+62, 17);
             terminal.putCharacter(option.charAt(i));
         }
         KeyStroke keyStroke = terminal.pollInput();

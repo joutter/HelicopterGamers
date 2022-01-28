@@ -3,7 +3,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 
 public class Player {
-    private int lives,xPos,yPos,oldX,oldY,points,speed, terminalRows, xMargin;
+    protected int lives,xPos,yPos,oldX,oldY,points,speed, terminalRows, xMargin;
     private HelicopterModel heli;
     private int[][] heliCoordinates;
     private Terminal terminal;
