@@ -8,21 +8,21 @@ import java.io.IOException;
 
 public class BattleField {
     Terminal terminal;
-    private final int COLUMNS = 130;
-    private final int ROWS = 35;
+    //private final int COLUMNS = 130;
     private Player player;
 
-    public BattleField(){
+    public BattleField(Terminal terminal){
+        this.terminal = terminal;
 
-        DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
-        terminalFactory.setInitialTerminalSize(new TerminalSize(COLUMNS,ROWS));
+        int ROWS = 0;
         try {
-            terminal = terminalFactory.createTerminal();
+            //terminal = terminalFactory.createTerminal();
+           ROWS = terminal.getTerminalSize().getRows();
             terminal.setCursorVisible(false);
         }catch (IOException e){
             System.out.println(e);
         }
-        new StartMenu();
+
         player = new Player(1,terminal,ROWS);
         handleKeyStrokes();
    }
@@ -48,9 +48,10 @@ public class BattleField {
                }while (keyStroke == null);
 
                if (keyStroke.getCharacter() != null) {
-                    if (keyStroke.getCharacter() == 'q' || keyStroke.getKeyType().equals(KeyType.EOF)) {
+                    if (keyStroke.getCharacter() == 'q') {
                        continueGame = false;
-                       terminal.close();
+                       terminal.clearScreen();
+                       new StartMenu();
                    }
                }
                switch (keyStroke.getKeyType()){
