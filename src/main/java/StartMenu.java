@@ -30,11 +30,10 @@ public class StartMenu {
             terminal.setCursorPosition( i+61, 16);
             terminal.putCharacter(question.charAt(i));
         }
-        //Options
-        String option = "Y / N";
-        for (int i = 0; i < option.length(); i++) {
+        String answer = "Y / N";
+        for (int i = 0; i < answer.length(); i++) {
             terminal.setCursorPosition( i+67, 17);
-            terminal.putCharacter(option.charAt(i));
+            terminal.putCharacter(answer.charAt(i));
         }
         KeyStroke keyStroke = terminal.pollInput();
         keyStroke = null;
