@@ -22,6 +22,7 @@ public class BattleField {
         }catch (IOException e){
             System.out.println(e);
         }
+        new StartMenu();
         player = new Player(1,terminal,ROWS);
         handleKeyStrokes();
    }
@@ -29,6 +30,7 @@ public class BattleField {
    private void handleKeyStrokes(){
 
         int index = 0;
+        int mover = 0;
         KeyStroke keyStroke = null;
        boolean continueGame = true;
        try {
@@ -37,7 +39,7 @@ public class BattleField {
 
                    index++;
                    if (index % 10 == 0) {
-                       player.move(1);
+                       player.move(mover);
                        }
 
                    Thread.sleep(5);
@@ -52,8 +54,14 @@ public class BattleField {
                    }
                }
                switch (keyStroke.getKeyType()){
-                   case ArrowUp -> player.move(-2);
-                   case ArrowDown -> player.move(1);
+                   case ArrowUp -> {
+                       //player.move(-1);
+                       mover=-1;
+                   }
+                   case ArrowDown -> {
+                       //player.move(1);
+                       mover = 1;
+                   }
                }
            }
        }catch (Exception e) {
