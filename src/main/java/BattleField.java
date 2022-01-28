@@ -10,7 +10,7 @@ public class BattleField {
     Terminal terminal;
     //private final int COLUMNS = 130;
     private Player player;
-
+    protected ObsticleHolder obsticleHolder;
     public BattleField(Terminal terminal){
         this.terminal = terminal;
 
@@ -24,6 +24,7 @@ public class BattleField {
         }
 
         player = new Player(1,terminal,ROWS);
+        obsticleHolder = new ObsticleHolder(terminal);
         handleKeyStrokes();
    }
 
@@ -36,6 +37,13 @@ public class BattleField {
        try {
            while(continueGame) {
                do {
+
+
+                    if (index % 500==0){
+                        obsticleHolder.addObsticle(COLUMNS, ROWS);
+                        obsticleHolder.drawObsticle();
+                        obsticleHolder.addGround(COLUMNS);
+                    }
 
                    index++;
                    if (index % 10 == 0) {
