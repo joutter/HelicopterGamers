@@ -12,12 +12,10 @@ public class BattleField {
     private Player player;
     private Bullet bullet;
 
+    protected ObsticleHolder obsticleHolder;
     public BattleField(Terminal terminal){
         this.terminal = terminal;
-        /*DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
-        terminalFactory.setInitialTerminalSize(new TerminalSize(COLUMNS,ROWS));
 
-         */
         int ROWS = 0;
         try {
             //terminal = terminalFactory.createTerminal();
@@ -28,6 +26,7 @@ public class BattleField {
         }
 
         player = new Player(1,terminal,ROWS);
+        obsticleHolder = new ObsticleHolder(terminal);
         handleKeyStrokes();
    }
 
@@ -40,7 +39,13 @@ public class BattleField {
        try {
            while(continueGame) {
                do {
+                    if (index % 20==0){
+                        obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
+                        obsticleHolder.drawObsticle();
+                        obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
 
+                    }
+                   obsticleHolder.checkObsticle(player.xPos, player.yPos);
                    index++;
                    if (index % 10 == 0) {
                        player.move(mover);
@@ -54,9 +59,9 @@ public class BattleField {
                }while (keyStroke == null);
 
                if (keyStroke.getCharacter() != null) {
-                    if (keyStroke.getCharacter() == 'q' || keyStroke.getKeyType().equals(KeyType.EOF)) {
+                    if (keyStroke.getCharacter() == 'q') {
                        continueGame = false;
-                       terminal.close();
+                       StartMenu.startMenu();
                    }
                }
                switch (keyStroke.getKeyType()){

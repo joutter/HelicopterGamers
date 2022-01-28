@@ -5,13 +5,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 public class StartMenu {
-    //Startscreen with menu
-        Terminal terminal;
-        //private final int COLUMNS = 130;
-        //private final int ROWS = 35;
-
-        public StartMenu(Terminal terminal){
-            this.terminal = terminal;
+        public StartMenu(){
         }
 
     public static void startMenu() throws Exception {
@@ -26,18 +20,18 @@ public class StartMenu {
         //menu
         String welcome = "WELCOME TO HELICOPTERGAMERS";
         for (int i = 0; i < welcome.length(); i++) {
-            terminal.setCursorPosition(i+58,15);
+            terminal.setCursorPosition(i+52,15);
             terminal.putCharacter(welcome.charAt(i));
         }
         String question = "Start A New Game";
         for (int i = 0; i < question.length(); i++) {
-            terminal.setCursorPosition( i+61, 16);
+            terminal.setCursorPosition( i+57, 16);
             terminal.putCharacter(question.charAt(i));
         }
         //Options
-        String option = "Y / N";
+        String option = "y / n";
         for (int i = 0; i < option.length(); i++) {
-            terminal.setCursorPosition( i+67, 17);
+            terminal.setCursorPosition( i+63, 17);
             terminal.putCharacter(option.charAt(i));
         }
         KeyStroke keyStroke = terminal.pollInput();
@@ -51,13 +45,13 @@ public class StartMenu {
 
             KeyType type = keyStroke.getKeyType();
             Character c = keyStroke.getCharacter();
-            if(c == Character.valueOf('Y')){
+            if(c == Character.valueOf('y') || c == Character.valueOf('Y')){
                 System.out.println("Starting game...");
                 terminal.clearScreen();
                 new BattleField(terminal);
             }
             //If user wants to quit
-            else if(c == Character.valueOf('N')){
+            else if(c == Character.valueOf('n') || c == Character.valueOf('N')){
                 continueReadingInput = false;
                 System.out.println("Quitting...");
                 terminal.close();
