@@ -41,8 +41,9 @@ public class BattleField {
                         obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
                         obsticleHolder.drawObsticle();
                         obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
-                    }
 
+                    }
+                   obsticleHolder.checkObsticle(player.xPos, player.yPos);
                    index++;
                    if (index % 10 == 0) {
                        player.move(mover);
