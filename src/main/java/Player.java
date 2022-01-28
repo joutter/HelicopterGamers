@@ -23,6 +23,7 @@ public class Player {
     }
     public void move(int i){
         int move = i * speed;
+
             oldY = yPos;
             oldX = xPos;
             yPos += move;
@@ -31,6 +32,7 @@ public class Player {
         if(inBound(yPos)) {
             drawHeli(false);
             drawHeli(true);
+
         }
         else{
             yPos = oldY;
