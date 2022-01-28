@@ -11,7 +11,7 @@ public class BattleField {
     private final int COLUMNS = 130;
     private final int ROWS = 35;
     private Player player;
-
+    protected  ObsticleHolder obsticleHolder;
     public BattleField(){
 
         DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
@@ -24,6 +24,7 @@ public class BattleField {
         }
         new StartMenu();
         player = new Player(1,terminal,ROWS);
+        obsticleHolder = new ObsticleHolder(terminal);
         handleKeyStrokes();
    }
 
@@ -35,7 +36,15 @@ public class BattleField {
        boolean continueGame = true;
        try {
            while(continueGame) {
+
                do {
+
+
+                    if (index % 500==0){
+                        obsticleHolder.addObsticle(COLUMNS, ROWS);
+                        obsticleHolder.drawObsticle();
+                        obsticleHolder.addGround(COLUMNS);
+                    }
 
                    index++;
                    if (index % 10 == 0) {
