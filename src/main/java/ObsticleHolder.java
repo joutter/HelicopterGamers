@@ -49,22 +49,26 @@ public class ObsticleHolder {
 
     }
     //Check for collision
-    boolean checkObsticle(int width, int height){
+    boolean checkObsticle(int width, int height, int index){
         for (Obsticle obsticle : obsticles){
             for (int i = 0; i<3;i++){
                 if ((obsticle.x == width+i) && (obsticle.y == height)){
-                    System.out.println("SMACK!");
+                    System.out.println("GAME OVER");
+                    System.out.println("You got " + index + " points!");
                     System.exit(0);
                     return false;
             }
                 if ((obsticle.x == width) && (obsticle.y == height+i)) {
-                    System.out.println("SMACK!");
+                    System.out.println("GAME OVER");
+                    System.out.println("You got " + index + " points!");
                     System.exit(0);
                     return false;
                 }
                     if ((obsticle.x == width+i) && (obsticle.y == height+i)) {
-                        System.out.println("SMACK!");
+                        System.out.println("GAME OVER");
+                        System.out.println("You got " + index + " points!");
                         System.exit(0);
+
                         return false;
                     }
             }
