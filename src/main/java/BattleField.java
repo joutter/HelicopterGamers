@@ -28,11 +28,18 @@ public class BattleField {
 
    private void handleKeyStrokes(){
 
-       KeyStroke keyStroke = null;
+        int index = 0;
+        KeyStroke keyStroke = null;
        boolean continueGame = true;
        try {
            while(continueGame) {
                do {
+
+                   index++;
+                   if (index % 10 == 0) {
+                       player.move(1);
+                       }
+
                    Thread.sleep(5);
                    keyStroke = terminal.pollInput();
 
@@ -45,7 +52,7 @@ public class BattleField {
                    }
                }
                switch (keyStroke.getKeyType()){
-                   case ArrowUp -> player.move(-1);
+                   case ArrowUp -> player.move(-2);
                    case ArrowDown -> player.move(1);
                }
            }
