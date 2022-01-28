@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelicopterModel {
-    private int[][] coordinates;
+    int[][] coordinates;
     private final char icon = '+';
     private final int HEIGHT;
     private final int WIDTH;
@@ -29,4 +29,6 @@ public class HelicopterModel {
     public int getWIDTH() {
         return WIDTH;
     }
+
+
 }

@@ -21,6 +21,23 @@ public class Player {
         //Initierar skeppet och ritar upp den. Kan anropas när vi vill starta om skeppet efter krash.
         restart();
     }
+
+    public int getxPos() {
+        return xPos;
+    }
+
+    public int getyPos() {
+        return yPos;
+    }
+
+   public int getHeliWidth(){
+        return heli.getWIDTH();
+   }
+
+    public int getHeliHight(){
+        return heli.getHEIGHT();
+    }
+
     public void move(int i){
         int move = i * speed;
 
@@ -43,6 +60,8 @@ public class Player {
         yPos = (terminalRows/2) - (heli.getHEIGHT() / 2);
         drawHeli(true);
     }
+
+
     private boolean inBound(int y){
         if(yPos<=terminalRows-(heli.getHEIGHT()) && yPos >= 0) {
             return true;
@@ -71,6 +90,7 @@ public class Player {
             for (int[] coordinate: heliCoordinates){
                 terminal.setCursorPosition(x+coordinate[1],y+coordinate[0]);
                 terminal.putCharacter(icon);
+
             }
             terminal.flush();
         }catch (IOException e){
