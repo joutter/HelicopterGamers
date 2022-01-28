@@ -50,8 +50,7 @@ public class BattleField {
                if (keyStroke.getCharacter() != null) {
                     if (keyStroke.getCharacter() == 'q') {
                        continueGame = false;
-                       terminal.clearScreen();
-                       new StartMenu();
+                       StartMenu.startMenu();
                    }
                }
                switch (keyStroke.getKeyType()){
