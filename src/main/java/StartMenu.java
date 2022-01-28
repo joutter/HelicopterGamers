@@ -53,7 +53,8 @@ public class StartMenu {
             Character c = keyStroke.getCharacter();
             if(c == Character.valueOf('Y')){
                 System.out.println("Starting game...");
-                new BattleField();
+                terminal.clearScreen();
+                new BattleField(terminal);
             }
             //If user wants to quit
             else if(c == Character.valueOf('N')){
