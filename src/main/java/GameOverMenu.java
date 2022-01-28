@@ -1,31 +1,22 @@
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
-public class StartMenu {
-        public StartMenu(){
-        }
-
-    public static void startMenu() throws Exception {
-        final int COLUMNS = 130;
-        final int ROWS = 35;
-        Terminal terminal;
-        DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory();
-        terminalFactory.setInitialTerminalSize(new TerminalSize(COLUMNS,ROWS));
-        terminal = terminalFactory.createTerminal();
-        terminal.setCursorVisible(false);
-
+public class GameOverMenu {
+    Terminal terminal;
+    public GameOverMenu(Terminal terminal){
+        this.terminal = terminal;
+    }
+    public void gameOverMenu() throws Exception{
         //menu
-        String welcome = "WELCOME TO HELICOPTERGAMERS";
+        String welcome = "GAME OVER";
         for (int i = 0; i < welcome.length(); i++) {
             terminal.setCursorPosition(i+51,15);
             terminal.putCharacter(welcome.charAt(i));
         }
-        String question = "Start A New Game";
+        String question = "Play A New Game?";
         for (int i = 0; i < question.length(); i++) {
-            terminal.setCursorPosition( i+57, 16);
+            terminal.setCursorPosition( i+56, 16);
             terminal.putCharacter(question.charAt(i));
         }
         //Options
