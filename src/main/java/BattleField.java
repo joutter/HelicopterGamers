@@ -37,12 +37,10 @@ public class BattleField {
        try {
            while(continueGame) {
                do {
-
-
-                    if (index % 500==0){
-                        obsticleHolder.addObsticle(COLUMNS, ROWS);
+                    if (index % 20==0){
+                        obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
                         obsticleHolder.drawObsticle();
-                        obsticleHolder.addGround(COLUMNS);
+                        obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
                     }
 
                    index++;
