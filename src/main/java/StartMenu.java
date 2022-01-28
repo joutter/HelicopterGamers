@@ -7,10 +7,14 @@ import com.googlecode.lanterna.terminal.Terminal;
 public class StartMenu {
     //Startscreen with menu
         Terminal terminal;
-        private final int COLUMNS = 130;
-        private final int ROWS = 35;
+        //private final int COLUMNS = 130;
+        //private final int ROWS = 35;
 
-    public void startMenu() throws Exception {
+        public StartMenu(Terminal terminal){
+            this.terminal = terminal;
+        }
+
+    public static void startMenu() throws Exception {
         final int COLUMNS = 130;
         final int ROWS = 35;
         Terminal terminal;
@@ -49,9 +53,10 @@ public class StartMenu {
             Character c = keyStroke.getCharacter();
             if(c == Character.valueOf('Y')){
                 System.out.println("Starting game...");
+                new BattleField();
             }
             //If user wants to quit
-            if(c == Character.valueOf('N')){
+            else if(c == Character.valueOf('N')){
                 continueReadingInput = false;
                 System.out.println("Quitting...");
                 terminal.close();
