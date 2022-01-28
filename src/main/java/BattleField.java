@@ -10,6 +10,7 @@ public class BattleField {
     Terminal terminal;
     //private final int COLUMNS = 130;
     private Player player;
+    private Bullet bullet;
 
     public BattleField(Terminal terminal){
         this.terminal = terminal;
@@ -43,6 +44,8 @@ public class BattleField {
                    index++;
                    if (index % 10 == 0) {
                        player.move(mover);
+                       if(bullet != null)
+                       bullet.move();
                        }
 
                    Thread.sleep(5);
@@ -64,6 +67,10 @@ public class BattleField {
                    case ArrowDown -> {
                        //player.move(1);
                        mover = 1;
+                   }
+                   case Tab -> {
+                       bullet = new Bullet(player.getxPos(), player.getyPos(), player.getHeliWidth(), player.getHeliHight(), terminal);
+
                    }
                }
            }
