@@ -16,6 +16,9 @@ public class BattleField {
     private int index = 0;
     private Display display;
     private int mover = 0;
+    private Enemy enemy;
+    private List<Enemy> enemyList;
+
 
     public BattleField(Terminal terminal){
         this.terminal = terminal;
@@ -29,11 +32,12 @@ public class BattleField {
         }catch (IOException e){
             System.out.println(e);
         }
-
+        enemy = new Enemy(100, 15, terminal);
         player = new Player(terminal,ROWS);
         display.setLive(player.getLives());
         obsticleHolder = new ObsticleHolder(terminal);
         handleKeyStrokes();
+
    }
 
    private void handleKeyStrokes(){
@@ -45,9 +49,17 @@ public class BattleField {
                do {
                    //skicka index till display
                    display.setPoints(index);
-                    if (index % 20==0){
+                    if (index % 500==0){
                         handleObsticle();
+
+
                     }
+
+                    if (index % 20==0){
+                        obsticleHolder.drawObsticle();
+                        enemy.move();
+                    }
+
                    if (index % 10 == 0) {
                        player.move(mover);
                        checkCollision();
@@ -113,9 +125,9 @@ public class BattleField {
    }
    private void handleObsticle() throws IOException{
        obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
-       obsticleHolder.drawObsticle();
        obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
    }
+
 
    private void bulletHandler(){
 
