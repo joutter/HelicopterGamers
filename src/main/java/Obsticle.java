@@ -10,7 +10,7 @@ public final char marker = '\u2588';
 Obsticle(int width, int height){
     Random r = new Random();
     x = width;
-    y = r.nextInt(height);
+    y = r.nextInt(height)+1;
 }
 
 // ground constructor

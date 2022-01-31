@@ -28,12 +28,14 @@ public class StartMenu {
             terminal.setCursorPosition( i+57, 16);
             terminal.putCharacter(question.charAt(i));
         }
+
         //Options
         String option = "y / n";
         for (int i = 0; i < option.length(); i++) {
             terminal.setCursorPosition( i+62, 17);
             terminal.putCharacter(option.charAt(i));
         }
+        terminal.flush();
         KeyStroke keyStroke = terminal.pollInput();
         keyStroke = null;
         boolean continueReadingInput = true;
@@ -59,4 +61,6 @@ public class StartMenu {
             terminal.flush();
         }
     }
+
+
 }

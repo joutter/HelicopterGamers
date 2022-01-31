@@ -9,7 +9,7 @@ public class ObsticleHolder {
 
     public ObsticleHolder(Terminal terminal) {
         this.terminal = terminal;
-        this.obsticles = obsticles;
+        //this.obsticles = obsticles;
     }
 
     public ArrayList<Obsticle> getObsticles() {

@@ -8,8 +8,7 @@ public class Player {
     private int[][] heliCoordinates;
     private Terminal terminal;
 
-    public Player(int lives, Terminal terminal, int terminalRows){
-        this.lives = lives;
+    public Player(Terminal terminal, int terminalRows){
         this.terminal = terminal;
         this.terminalRows = terminalRows;
         heli = new HelicopterModel();
@@ -17,9 +16,16 @@ public class Player {
         points = 0;
         speed = 1;
         xMargin = 10;
+        lives = 3;
 
         //Initierar skeppet och ritar upp den. Kan anropas när vi vill starta om skeppet efter krash.
         restart();
+    }
+    public int getLives(){
+        return lives;
+    }
+    public void decreaseLive(){
+        lives--;
     }
 
     public int getxPos() {
