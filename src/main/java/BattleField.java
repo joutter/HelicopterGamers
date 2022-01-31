@@ -49,10 +49,9 @@ public class BattleField {
                do {
                    //skicka index till display
                    display.setPoints(index);
-                    if (index % 500==0){
+                    if (index % 20==0){
                         handleObsticle();
-
-
+                        removeOldObsticle();
                     }
 
                     if (index % 20==0){
@@ -125,11 +124,23 @@ public class BattleField {
    }
    private void handleObsticle() throws IOException{
        obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
+       obsticleHolder.drawObsticle();
        obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
+       obsticleHolder.addRoof(terminal.getTerminalSize().getColumns());
+   }
+   private void removeOldObsticle() throws IOException {
+       for(int j=0;j<obsticleHolder.getObsticles().size();j++){
+           obsticle = obsticleHolder.getObsticles().get(j);
+           for(int[] coordinate : obsticle.getObsticleCordinates()) {
+                if (coordinate[0] < -2){
+                    obsticle.removeObsticle(terminal);
+                    obsticleHolder.obsticles.remove(obsticle);
+                }
+            }
+        }
    }
 
-
-   private void bulletHandler(){
+   private void bulletHandler() throws IOException {
 
             //Går igenom alla bullets som lagt i listan vid TAB
            for (int i=0;i<bulletList.size();i++) {
@@ -143,6 +154,7 @@ public class BattleField {
                        if (bulletPosition[0] >= coordinate[0] && bulletPosition[1] == coordinate[1]) {
 
                            // radera obsticle om träff
+                           obsticle.removeObsticle(terminal);
                            obsticleHolder.obsticles.remove(j);
 
                            //får ibland indexOutOfBounds så måste dubbelkolla
