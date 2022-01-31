@@ -16,6 +16,9 @@ public class BattleField {
     private int index = 0;
     private Display display;
     private int mover = 0;
+    private boolean continueGame = true;
+    private  KeyStroke keyStroke = null;
+    private boolean playerAlive = true;
 
     public BattleField(Terminal terminal){
         this.terminal = terminal;
@@ -38,37 +41,36 @@ public class BattleField {
 
    private void handleKeyStrokes(){
 
-        KeyStroke keyStroke = null;
-       boolean continueGame = true;
        try {
            while(continueGame) {
                do {
-                   //skicka index till display
-                   display.setPoints(index);
-                    if (index % 20==0){
-                        handleObsticle();
-                        removeOldObsticle();
-                    }
-                   if (index % 10 == 0) {
-                       player.move(mover);
-                       checkCollision();
-                   }
-                   if(index % 3 == 0){
-                       if(!bulletList.isEmpty()) {
-                           bulletHandler();
+                   if(playerAlive) {
+                       //skicka index till display
+                       display.setPoints(index);
+                       if (index % 20 == 0) {
+                           handleObsticle();
+                           removeOldObsticle();
                        }
+                       if (index % 10 == 0) {
+                           player.move(mover);
+                           checkCollision();
+                       }
+                       if (index % 3 == 0) {
+                           if (!bulletList.isEmpty()) {
+                               bulletHandler();
+                           }
+                       }
+                       index++;
+                       Thread.sleep(5);
+                       keyStroke = terminal.pollInput();
                    }
-                   index++;
-                   Thread.sleep(5);
-                   keyStroke = terminal.pollInput();
 
                }while (keyStroke == null);
-
                if (keyStroke.getCharacter() != null) {
-                    if (keyStroke.getCharacter() == 'q') {
+                   if (keyStroke.getCharacter() == 'q'){
                        continueGame = false;
-                       terminal.clearScreen();
-                       new StartMenu();
+                       terminal.close();
+                       new StartMenu(true);
                    }
                }
                switch (keyStroke.getKeyType()){
@@ -87,8 +89,7 @@ public class BattleField {
            e.printStackTrace();
        }
    }
-   private void checkCollision(){
-
+   private void checkCollision() throws Exception {
        for(int j=0;j<obsticleHolder.getObsticles().size();j++) {
            for(int[] coordinate : obsticleHolder.getObsticles().get(j).getObsticleCordinates()) {
                if ((coordinate[0] <= player.xPos + player.getHeliWidth() && coordinate[0] /*+ obsticle.width()*/ >= player.xPos)
@@ -101,17 +102,26 @@ public class BattleField {
                    obsticleHolder = new ObsticleHolder(terminal);
                    player.restart();
                    player.decreaseLive();
+
                    if (player.getLives() > 0) {
                        display.setLive(player.getLives());
-                   } else {
-                       System.out.println("GAME OVER!");
-                       //terminalen clear. spelaren & obsticles inte rör sig && att visa poäng.
+                       //If lives = 0
+                   } else if(player.getLives()==0) {
+                           System.out.println("GAME OVER!");
+                           playerAlive = false;
+                           continueGame = false;
+                           terminal.close();
+                           new StartMenu(false, index);
+
+                           terminal.flush();
+                           //terminalen clear. spelaren & obsticles inte rör sig && att visa poäng.
+                       }
                    }
 
                }
            }
        }
-   }
+
    private void handleObsticle() throws IOException{
        obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
        obsticleHolder.drawObsticle();
