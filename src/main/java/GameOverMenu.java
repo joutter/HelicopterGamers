@@ -14,15 +14,20 @@ public class GameOverMenu {
             terminal.setCursorPosition(i+51,15);
             terminal.putCharacter(welcome.charAt(i));
         }
+        String totalPoints = "Points: ";
+        for (int i = 0; i < totalPoints.length(); i++) {
+            terminal.setCursorPosition( i+56, 16);
+            terminal.putCharacter(totalPoints.charAt(i));
+        }
         String question = "Play A New Game?";
         for (int i = 0; i < question.length(); i++) {
-            terminal.setCursorPosition( i+56, 16);
+            terminal.setCursorPosition( i+56, 17);
             terminal.putCharacter(question.charAt(i));
         }
         //Options
         String option = "y / n";
         for (int i = 0; i < option.length(); i++) {
-            terminal.setCursorPosition( i+62, 17);
+            terminal.setCursorPosition( i+62, 18);
             terminal.putCharacter(option.charAt(i));
         }
         KeyStroke keyStroke = terminal.pollInput();
@@ -37,7 +42,7 @@ public class GameOverMenu {
             KeyType type = keyStroke.getKeyType();
             Character c = keyStroke.getCharacter();
             if(c == Character.valueOf('y') || c == Character.valueOf('Y')){
-                System.out.println("Starting game...");
+                System.out.println("Starting a new game...");
                 terminal.clearScreen();
                 new BattleField(terminal);
             }
