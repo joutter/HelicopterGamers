@@ -68,30 +68,6 @@ public class BattleField {
                        Thread.sleep(5);
                        keyStroke = terminal.pollInput();
                    }
-                   //skicka index till display
-                   display.setPoints(index);
-                    if (index % 20==0){
-                        handleObsticle();
-                        removeOldObsticle();
-                    }
-
-                    if (index % 20==0){
-                        obsticleHolder.drawObsticle();
-                        enemy.move();
-                    }
-
-                   if (index % 10 == 0) {
-                       player.move(mover);
-                       checkCollision();
-                   }
-                   if(index % 3 == 0){
-                       if(!bulletList.isEmpty()) {
-                           bulletHandler();
-                       }
-                   }
-                   index++;
-                   Thread.sleep(5);
-                   keyStroke = terminal.pollInput();
 
                }while (keyStroke == null);
                if (keyStroke.getCharacter() != null) {
@@ -153,8 +129,6 @@ public class BattleField {
    private void handleObsticle() throws IOException{
        obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
        obsticleHolder.drawObsticle();
-       obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
-       obsticleHolder.addRoof(terminal.getTerminalSize().getColumns());
    }
    private void removeOldObsticle() throws IOException {
        for(int j=0;j<obsticleHolder.getObsticles().size();j++){
