@@ -17,19 +17,18 @@ public class StartMenu {
     public StartMenu(boolean isStartMenu, int points) throws Exception {
         this.isStartMenu = isStartMenu;
         this.points = points;
-        terminalFactory = new DefaultTerminalFactory();
-        terminalFactory.setInitialTerminalSize(new TerminalSize(COLUMNS, ROWS));
-        terminal = terminalFactory.createTerminal();
-        terminal.setCursorVisible(false);
+        startStartMenu();
     }
 
     public StartMenu(boolean isStartMenu) throws Exception {
         this.isStartMenu = isStartMenu;
+        startStartMenu();
+    }
+    private void startStartMenu() throws Exception{
         terminalFactory = new DefaultTerminalFactory();
         terminalFactory.setInitialTerminalSize(new TerminalSize(COLUMNS, ROWS));
         terminal = terminalFactory.createTerminal();
         terminal.setCursorVisible(false);
-
         //StartMenu
         if (isStartMenu) {
             String welcome = "WELCOME TO HELICOPTERGAMERS";
@@ -77,7 +76,7 @@ public class StartMenu {
         } else {
             String welcome = "GAME OVER";
             for (int i = 0; i < welcome.length(); i++) {
-                terminal.setCursorPosition(i + 54, 15);
+                terminal.setCursorPosition(i + 56, 15);
                 terminal.putCharacter(welcome.charAt(i));
             }
             String totalPoints = "Points: " + points;
