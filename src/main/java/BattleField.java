@@ -8,6 +8,7 @@ public class BattleField {
     private Terminal terminal;
     private Player player;
     protected ObsticleHolder obsticleHolder;
+    private Obsticle obsticle;
     private List<Bullet> bulletList;
     private Bullet bullet;
     private int ROWS = 0;
@@ -88,25 +89,26 @@ public class BattleField {
    private void checkCollision(){
 
        for(int j=0;j<obsticleHolder.getObsticles().size();j++) {
-           Obsticle obsticle = obsticleHolder.getObsticles().get(j);
-            if((obsticle.x <= player.xPos +player.getHeliWidth()  && obsticle.x /*+ obsticle.width()*/ >=player.xPos)
-                    && (player.yPos+player.getHeliHight() >= obsticle.y && player.yPos<= obsticle.y)){
-                    try {
-                        terminal.clearScreen();
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
-                    obsticleHolder = new ObsticleHolder(terminal);
-                    player.restart();
-                    player.decreaseLive();
-                    if(player.getLives()>0) {
-                        display.setLive(player.getLives());
-                    }else{
-                        System.out.println("GAME OVER!");
-                        //Handle game over
-                    }
+           for(int[] coordinate : obsticleHolder.getObsticles().get(j).getObsticleCordinates()) {
+               if ((coordinate[0] <= player.xPos + player.getHeliWidth() && coordinate[0] /*+ obsticle.width()*/ >= player.xPos)
+                       && (player.yPos + player.getHeliHight() >= coordinate[1] && player.yPos <= coordinate[1])) {
+                   try {
+                       terminal.clearScreen();
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+                   obsticleHolder = new ObsticleHolder(terminal);
+                   player.restart();
+                   player.decreaseLive();
+                   if (player.getLives() > 0) {
+                       display.setLive(player.getLives());
+                   } else {
+                       System.out.println("GAME OVER!");
+                       //terminalen clear. spelaren & obsticles inte rör sig && att visa poäng.
+                   }
 
-            }
+               }
+           }
        }
    }
    private void handleObsticle() throws IOException{
@@ -123,18 +125,21 @@ public class BattleField {
 
                // För varje bullet gå igenom alla Obsticles och se om träff
                for(int j=0;j<obsticleHolder.getObsticles().size();j++){
-                   Obsticle obsticle = obsticleHolder.getObsticles().get(j);
-                   if (bulletPosition[0] >= obsticle.x && bulletPosition[1] == obsticle.y ){
+                   obsticle = obsticleHolder.getObsticles().get(j);
 
-                       // radera obsticle om träff
-                        obsticleHolder.obsticles.remove(j);
+                   for(int[] coordinate : obsticle.getObsticleCordinates()) {
+                       if (bulletPosition[0] >= coordinate[0] && bulletPosition[1] == coordinate[1]) {
 
-                        //får ibland indexOutOfBounds så måste dubbelkolla
-                        if(i<bulletList.size()) {
-                            //radera och ta bort bullet från listan om träff
-                            bulletList.get(i).killBullet();
-                            bulletList.remove(i);
-                        }
+                           // radera obsticle om träff
+                           obsticleHolder.obsticles.remove(j);
+
+                           //får ibland indexOutOfBounds så måste dubbelkolla
+                           if (i < bulletList.size()) {
+                               //radera och ta bort bullet från listan om träff
+                               bulletList.get(i).killBullet();
+                               bulletList.remove(i);
+                           }
+                       }
                    }
                }
                //Radera bullet om den åker utanför skärmen
