@@ -39,17 +39,11 @@ public class ObsticleHolder {
                 }
     }
 
-    void addGround(int width){ obsticles.add(new Obsticle(width));}
 
+    void addGround(int width){ obsticles.add(new Obsticle(width, true));}
 
-    // move the objects closer to the player
-    void moveObsticle(){
-        for (Obsticle obsticle : obsticles){
-            obsticle.oldx = obsticle.x;
-            obsticle.x -= 1;
-        }
+    void addRoof(int width){ obsticles.add(new Obsticle(width, false));}
 
-    }
     //Check for collision
     boolean checkObsticle(int width, int height, int index) throws Exception {
         for (Obsticle obsticle : obsticles){
