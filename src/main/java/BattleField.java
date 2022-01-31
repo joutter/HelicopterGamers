@@ -18,6 +18,7 @@ public class BattleField {
     private int mover = 0;
     private Enemy enemy;
     private List<Enemy> enemyList;
+    private boolean bulletAlive = false;
 
     private boolean continueGame = true;
     private  KeyStroke keyStroke = null;
@@ -35,7 +36,7 @@ public class BattleField {
         }catch (IOException e){
             System.out.println(e);
         }
-        enemy = new Enemy(100, 15, terminal);
+        // enemy = new Enemy(100, 15, terminal);
         player = new Player(terminal,ROWS);
         display.setLive(player.getLives());
         obsticleHolder = new ObsticleHolder(terminal);
@@ -51,9 +52,23 @@ public class BattleField {
                    if(playerAlive) {
                        //skicka index till display
                        display.setPoints(index);
-                       if (index % 20 == 0) {
+                       if (index % 3 == 0) {
                            handleObsticle();
                            removeOldObsticle();
+                       }
+                       if (index > 1000) {
+                           if (index % 3 == 0) {
+                               handleObsticle();
+                               removeOldObsticle();
+                           }
+                       }
+                       if (index % 100 == 0){
+                           obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
+                       }
+                       if (index > 1000){
+                        if (index % 100 == 0){
+                           obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
+                       }
                        }
                        if (index % 10 == 0) {
                            player.move(mover);
@@ -64,6 +79,7 @@ public class BattleField {
                                bulletHandler();
                            }
                        }
+
                        index++;
                        Thread.sleep(5);
                        keyStroke = terminal.pollInput();
@@ -77,15 +93,18 @@ public class BattleField {
                        new StartMenu(true);
                    }
                }
-               switch (keyStroke.getKeyType()){
+               switch (keyStroke.getKeyType()) {
                    case ArrowUp -> {
-                       mover=-1;
+                       mover = -1;
                    }
                    case ArrowDown -> {
                        mover = 1;
                    }
                    case Tab -> {
-                       bulletList.add(new Bullet(player.xPos, player.yPos, player.getHeliWidth(), player.getHeliHight(), terminal));
+                       if (!bulletAlive) {
+                           bulletList.add(new Bullet(player.xPos, player.yPos, player.getHeliWidth(), player.getHeliHight(), terminal));
+                           bulletAlive = true;
+                       }
                    }
                }
            }
@@ -127,7 +146,6 @@ public class BattleField {
        }
 
    private void handleObsticle() throws IOException{
-       obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
        obsticleHolder.drawObsticle();
    }
    private void removeOldObsticle() throws IOException {
@@ -164,6 +182,7 @@ public class BattleField {
                                //radera och ta bort bullet från listan om träff
                                bulletList.get(i).killBullet();
                                bulletList.remove(i);
+                               bulletAlive = false;
                            }
                        }
                    }
@@ -172,6 +191,7 @@ public class BattleField {
                if ( bulletPosition[0] >= COLUMNS) {
                    bulletList.get(i).killBullet();
                    bulletList.remove(i);
+                   bulletAlive = false;
                }
            }
        }
