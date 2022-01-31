@@ -1,58 +1,62 @@
-import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
+import java.util.*;
 
 public class BattleField {
-    Terminal terminal;
-    //private final int COLUMNS = 130;
+    private Terminal terminal;
     private Player player;
-    private Bullet bullet;
-
     protected ObsticleHolder obsticleHolder;
+    private List<Bullet> bulletList;
+    private Bullet bullet;
+    private int ROWS = 0;
+    private int COLUMNS = 0;
+    private int index = 0;
+    private Display display;
+    private int mover = 0;
+
     public BattleField(Terminal terminal){
         this.terminal = terminal;
+        bulletList = new ArrayList<>();
+        display = new Display(terminal);
 
-        int ROWS = 0;
         try {
-            //terminal = terminalFactory.createTerminal();
            ROWS = terminal.getTerminalSize().getRows();
+            COLUMNS = terminal.getTerminalSize().getColumns();
             terminal.setCursorVisible(false);
         }catch (IOException e){
             System.out.println(e);
         }
 
-        player = new Player(1,terminal,ROWS);
+        player = new Player(terminal,ROWS);
+        display.setLive(player.getLives());
         obsticleHolder = new ObsticleHolder(terminal);
         handleKeyStrokes();
    }
 
    private void handleKeyStrokes(){
 
-        int index = 0;
-        int mover = 0;
         KeyStroke keyStroke = null;
        boolean continueGame = true;
        try {
            while(continueGame) {
                do {
+                   //skicka index till display
+                   display.setPoints(index);
                     if (index % 20==0){
-                        obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
-                        obsticleHolder.drawObsticle();
-                        obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
-
+                        handleObsticle();
                     }
-                   obsticleHolder.checkObsticle(player.xPos, player.yPos);
-                   index++;
                    if (index % 10 == 0) {
                        player.move(mover);
-                       if(bullet != null)
-                       bullet.move();
+                       checkCollision();
+                   }
+                   if(index % 3 == 0){
+                       if(!bulletList.isEmpty()) {
+                           bulletHandler();
                        }
-
+                   }
+                   index++;
                    Thread.sleep(5);
                    keyStroke = terminal.pollInput();
 
@@ -61,26 +65,83 @@ public class BattleField {
                if (keyStroke.getCharacter() != null) {
                     if (keyStroke.getCharacter() == 'q') {
                        continueGame = false;
-                       StartMenu.startMenu();
+                       terminal.clearScreen();
+                       new StartMenu();
                    }
                }
                switch (keyStroke.getKeyType()){
                    case ArrowUp -> {
-                       //player.move(-1);
                        mover=-1;
                    }
                    case ArrowDown -> {
-                       //player.move(1);
                        mover = 1;
                    }
                    case Tab -> {
-                       bullet = new Bullet(player.getxPos(), player.getyPos(), player.getHeliWidth(), player.getHeliHight(), terminal);
-
+                       bulletList.add(new Bullet(player.xPos, player.yPos, player.getHeliWidth(), player.getHeliHight(), terminal));
                    }
                }
            }
        }catch (Exception e) {
-           System.out.println(e);
+           e.printStackTrace();
        }
    }
+   private void checkCollision(){
+
+       for(int j=0;j<obsticleHolder.getObsticles().size();j++) {
+           Obsticle obsticle = obsticleHolder.getObsticles().get(j);
+            if((obsticle.x <= player.xPos +player.getHeliWidth()  && obsticle.x /*+ obsticle.width()*/ >=player.xPos)
+                    && (player.yPos+player.getHeliHight() >= obsticle.y && player.yPos<= obsticle.y)){
+                    try {
+                        terminal.clearScreen();
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                    obsticleHolder = new ObsticleHolder(terminal);
+                    player.restart();
+                    player.decreaseLive();
+                    if(player.getLives()>0) {
+                        display.setLive(player.getLives());
+                    }else{
+                        System.out.println("GAME OVER!");
+                        //Handle game over
+                    }
+
+            }
+       }
+   }
+   private void handleObsticle() throws IOException{
+       obsticleHolder.addObsticle(terminal.getTerminalSize().getColumns(),terminal.getTerminalSize().getRows());
+       obsticleHolder.drawObsticle();
+       obsticleHolder.addGround(terminal.getTerminalSize().getColumns());
+   }
+
+   private void bulletHandler(){
+
+            //Går igenom alla bullets som lagt i listan vid TAB
+           for (int i=0;i<bulletList.size();i++) {
+               int[] bulletPosition=bulletList.get(i).move();
+
+               // För varje bullet gå igenom alla Obsticles och se om träff
+               for(int j=0;j<obsticleHolder.getObsticles().size();j++){
+                   Obsticle obsticle = obsticleHolder.getObsticles().get(j);
+                   if (bulletPosition[0] >= obsticle.x && bulletPosition[1] == obsticle.y ){
+
+                       // radera obsticle om träff
+                        obsticleHolder.obsticles.remove(j);
+
+                        //får ibland indexOutOfBounds så måste dubbelkolla
+                        if(i<bulletList.size()) {
+                            //radera och ta bort bullet från listan om träff
+                            bulletList.get(i).killBullet();
+                            bulletList.remove(i);
+                        }
+                   }
+               }
+               //Radera bullet om den åker utanför skärmen
+               if ( bulletPosition[0] >= COLUMNS) {
+                   bulletList.get(i).killBullet();
+                   bulletList.remove(i);
+               }
+           }
+       }
 }
